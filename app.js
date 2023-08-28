@@ -63,10 +63,9 @@ app.put("/todos/:id", async (req, res) => {
     const todo = await toggleCompleted(id, value);
     res.status(200).json(todo);
   } catch (error) {
+    console.log(error.message);
     res.status(400).json({ error: error.message });
   }
-  console.log(value);
-  console.log(id);
 });
 
 app.delete("/todos/:id", async (req, res) => {

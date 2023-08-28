@@ -64,7 +64,7 @@ export const deleteTodoById = async (id) => {
 };
 
 export const toggleCompleted = async (id, value) => {
-  const newValue = value === true ? "TRUE" : "FALSE";
+  const newValue = value === true ? 1 : 0;
   const [result] = pool.query(
     `UPDATE todos
     SET completed = ${newValue}
@@ -72,6 +72,7 @@ export const toggleCompleted = async (id, value) => {
     `,
     [id]
   );
+  console.log(result);
   return result;
 };
 
