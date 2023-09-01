@@ -63,7 +63,6 @@ app.put("/todos/:id", async (req, res) => {
     const todo = await toggleCompleted(id, value);
     res.status(200).json(todo);
   } catch (error) {
-    console.log(error.message);
     res.status(400).json({ error: error.message });
   }
 });
@@ -80,6 +79,7 @@ app.delete("/todos/:id", async (req, res) => {
 
 app.post("/todos/shared_todos", async (req, res) => {
   const { todo_id, user_id, email } = req.body;
+  console.log({ todo_id, user_id, email });
   try {
     const userToShare = await getUserByEmail(email);
     const sharedTodo = await shareTodo(todo_id, user_id, userToShare.id);

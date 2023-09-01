@@ -45,7 +45,7 @@ export const getUserById = async (id) => {
 };
 
 export const getUserByEmail = async (id) => {
-  const [email] = await pool.query(`SELECT * FROM users WHERE email = ?`, [id]);
+  const [email] = await pool.query(`SELECT * FROM users WHERE email = "${id}"`);
   return email[0];
 };
 
@@ -65,21 +65,24 @@ export const deleteTodoById = async (id) => {
 
 export const toggleCompleted = async (id, value) => {
   const newValue = value === true ? 1 : 0;
-  const [result] = pool.query(
-    `UPDATE todos
-    SET completed = ${newValue}
-    WHERE id = ?
-    `,
-    [id]
-  );
-  console.log(result);
-  return result;
+  try {
+    const result = await pool?.query(
+      `UPDATE todos
+      SET completed = ?
+      WHERE id = ?
+      `,
+      [newValue, id]
+    );
+    return result;
+  } catch (error) {
+    console.log(error?.message);
+  }
 };
 
 export const shareTodo = async (todo_id, user_id, shared_with_id) => {
   const [result] = await pool.query(
     `
-    INSERT INTO share_todos (todo_id, user_id, shared_with_id)
+    INSERT INTO shared_todos (todo_id, user_id, shared_with_id)
     VALUES (?,?,?)
     `,
     [todo_id, user_id, shared_with_id]
