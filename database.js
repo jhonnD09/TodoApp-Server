@@ -50,17 +50,25 @@ export const getUserByEmail = async (id) => {
 };
 
 export const createTodo = async (user_id, title) => {
-  const result = pool.query(
-    `INSERT INTO todos (user_id, title) VALUES (?, ?)`,
-    [user_id, title]
-  );
-  const todoId = result.insertId;
-  return getTodo(todoId);
+  try {
+    const result = pool.query(
+      `INSERT INTO todos (user_id, title) VALUES (?, ?)`,
+      [user_id, title]
+    );
+    const todoId = result.insertId;
+    return getTodo(todoId);
+  } catch (error) {
+    console.log(error.message);
+  }
 };
 
 export const deleteTodoById = async (id) => {
-  const [result] = pool.query(`DELETE FROM todos WHERE id = ?`, [id]);
-  return result;
+  try {
+    const [result] = pool.query(`DELETE FROM todos WHERE id = ?`, [id]);
+    return result;
+  } catch (error) {
+    console.log(error.message);
+  }
 };
 
 export const toggleCompleted = async (id, value) => {

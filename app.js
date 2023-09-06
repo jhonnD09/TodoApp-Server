@@ -91,6 +91,7 @@ app.post("/todos/shared_todos", async (req, res) => {
 
 app.post("/todos", async (req, res) => {
   const { user_id, title } = req.body;
+  console.log(user_id, title);
   try {
     const newTodo = await createTodo(user_id, title);
     res.status(201).json(newTodo);
